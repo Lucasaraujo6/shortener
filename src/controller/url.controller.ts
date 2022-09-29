@@ -14,10 +14,10 @@ export async function postUrlHandler(req: Request, res: Response) {
   return res.send(url);
 }
 
-export async function getUrlHandler(req: Request, res: Response) {
+export function getUrlHandler(req: Request, res: Response) {
   const urlId = req.params.urlId;
 
-  const url = await getUrl(urlId);
+  const url = getUrl(urlId);
   if (!url) {
     return res.sendStatus(404);
   }

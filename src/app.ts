@@ -1,7 +1,7 @@
 import express from 'express';
-import config from 'config';
 import logger from './utils/logger';
 import routes from './routes';
+import config from 'config';
 
 const port = config.get<number>('port');
 const host = config.get<string>('host');

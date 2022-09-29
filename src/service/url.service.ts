@@ -2,6 +2,10 @@
 import log from '../utils/logger';
 import crypto from 'crypto';
 import fs from 'fs';
+import config from 'config';
+
+const port = config.get<number>('port');
+const host = config.get<string>('host');
 
 let urls = [];
 
@@ -12,11 +16,13 @@ const urlFile = () => {
     } else log.info('URL inserida');
   });
 };
+urlFile();
 
-const readFile = async () => {
+const readFile = () => {
   urls = JSON.parse(fs.readFileSync('./src/data/urls.json', 'utf-8'));
 };
-export async function postUrl(input: string) {
+
+export function postUrl(input: string) {
   readFile();
 
   const shorter = createShort();
@@ -27,14 +33,14 @@ export async function postUrl(input: string) {
   urlFile();
 
   try {
-    return shorter;
+    return `http://${host}:${port}/${shorter}`;
   } catch (e) {
     log.error(e);
     throw e;
   }
 }
-export async function getUrl(input: string) {
-  await readFile();
+export function getUrl(input: string) {
+  readFile();
   try {
     let url = '#';
     urls.forEach((urlObjec) => {

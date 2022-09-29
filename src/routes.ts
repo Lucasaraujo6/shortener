@@ -10,7 +10,7 @@ const routes = (app: Express) => {
   );
 
   app.post('/api/:urlId', postUrlHandler);
-  app.get('/api/:urlId', getUrlHandler);
+  app.get('/:urlId', getUrlHandler);
 };
 
 export default routes;
