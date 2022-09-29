@@ -9,7 +9,7 @@ const routes = (app: Express) => {
     ),
   );
 
-  app.post('/api/:urlId', postUrlHandler);
+  app.post('/api', postUrlHandler);
   app.get('/:urlId', getUrlHandler);
 };
 

@@ -7,8 +7,6 @@ import config from 'config';
 const port = config.get<number>('port');
 const host = config.get<string>('host');
 
-let urls = [];
-
 const urlFile = () => {
   fs.writeFile('./src/data/urls.json', JSON.stringify(urls), (err) => {
     if (err) {
@@ -16,15 +14,28 @@ const urlFile = () => {
     } else log.info('URL inserida');
   });
 };
-urlFile();
 
-const readFile = () => {
-  urls = JSON.parse(fs.readFileSync('./src/data/urls.json', 'utf-8'));
+const getInstance = () => {
+  // create object if it's not already created
+  // console.log(JSON.parse(fs.readFileSync('./src/data/urls.json', 'utf-8')));
+  try {
+    if (urls.length === 0) {
+      urls = JSON.parse(fs.readFileSync('./src/data/urls.json', 'utf-8'));
+    }
+  } catch (e) {
+    urlFile();
+  }
 };
 
-export function postUrl(input: string) {
-  readFile();
+// const readFile = () => {
+//   const test = JSON.parse(fs.readFileSync('./src/data/urls.json', 'utf-8'));
+//   if (test.length > 0 || Object.keys(test).length) urls = test;
+// };
 
+let urls = [];
+getInstance();
+
+export function postUrl(input: string) {
   const shorter = createShort();
   urls.push({
     [shorter]: input,
@@ -40,7 +51,6 @@ export function postUrl(input: string) {
   }
 }
 export function getUrl(input: string) {
-  readFile();
   try {
     let url = '#';
     urls.forEach((urlObjec) => {

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { postUrl, getUrl } from '../service/url.service';
 
 export async function postUrlHandler(req: Request, res: Response) {
-  const urlId = req.params.urlId;
+  const { urlId }: { urlId: string } = req.body;
 
   const url = postUrl(urlId);
 
