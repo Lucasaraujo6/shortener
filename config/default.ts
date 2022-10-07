@@ -1,5 +1,5 @@
 export default {
-  port: 4001,
-  host: "localhost",
-  dbUrl: "mongodb://localhost:27017/rest-api",
+  port: 3333,
+  host: 'localhost',
+  dbUrl: 'mongodb://localhost:27017/rest-api',
 };

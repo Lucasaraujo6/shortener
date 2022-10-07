@@ -1,16 +1,11 @@
-import { Express, Request, Response } from 'express';
-import { postUrlHandler, getUrlHandler } from './controller/url.controller';
+import { Express } from 'express';
+import { create, get } from './controller/url.controller';
 
 const routes = (app: Express) => {
-  app.get(
-    '/healthcheck',
-    (req: Request, res: Response) => (
-      console.log(req.url), res.sendStatus(200)
-    ),
-  );
-
-  app.post('/api', postUrlHandler);
-  app.get('/:urlId', getUrlHandler);
+  app
+    //URLS
+    .get('/:urlId', get)
+    .post('/api', create)
 };
 
 export default routes;

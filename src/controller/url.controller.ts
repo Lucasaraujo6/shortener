@@ -1,25 +1,35 @@
 import { Request, Response } from 'express';
 
-import { postUrl, getUrl } from '../service/url.service';
+import { createUrl, getUrl } from '../service/url.service';
+import log from '../utils/logger';
 
-export async function postUrlHandler(req: Request, res: Response) {
-  const { urlId }: { urlId: string } = req.body;
+export async function create(req: Request, res: Response) {
+  try {
+    const { urlId }: { urlId: string } = req.body;
+    const url = await createUrl(urlId);
 
-  const url = postUrl(urlId);
+    // if (!url) {
+    //   return res.sendStatus(404);
+    // }
 
-  if (!url) {
+    return res.status(200).send(url);
+  } catch (e) {
+    log.error(e);
     return res.sendStatus(404);
   }
-
-  return res.send(url);
 }
 
-export function getUrlHandler(req: Request, res: Response) {
-  const urlId = req.params.urlId;
+export async function get(req: Request, res: Response) {
+  try {
+    const urlId = req.params.urlId;
 
-  const url = getUrl(urlId);
-  if (!url) {
-    return res.sendStatus(404);
+    const url = await getUrl(urlId);
+    if (!url) {
+      return res.sendStatus(404);
+    }
+
+    return res.redirect(url.url);
+  } catch (e) {
+    log.error(e);
   }
-  return res.redirect(url);
 }
