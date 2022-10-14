@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { createUrl, getUrl } from '../service/url.service';
 import log from '../utils/logger';
 
-export async function create(req: Request, res: Response) {
+export async function create(req: Request, res: Response, next: NextFunction) {
   try {
     const { urlId }: { urlId: string } = req.body;
     const url = await createUrl(urlId);
@@ -19,7 +19,7 @@ export async function create(req: Request, res: Response) {
   }
 }
 
-export async function get(req: Request, res: Response) {
+export async function get(req: Request, res: Response, next: NextFunction) {
   try {
     const urlId = req.params.urlId;
 
@@ -30,6 +30,18 @@ export async function get(req: Request, res: Response) {
 
     return res.redirect(url.url);
   } catch (e) {
-    log.error(e);
+    const error = new Error(e);
+    error.httpStatusCode = 500;
+    return next(error);
+    // log.error(e);
   }
+}
+
+export function treatError(
+  error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  res.status(error.httpStatusCode).json('Algo errado');
 }
