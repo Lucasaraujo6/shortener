@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, Response } from "express";
 
-import { createUrl, getUrl } from '../service/url.service';
-import log from '../utils/logger';
+import { createUrl, getUrl } from "../service/url.service";
+import log from "../utils/logger";
 
 export async function create(req: Request, res: Response, _next: NextFunction) {
   try {
@@ -25,7 +25,7 @@ export async function get(req: Request, res: Response, next: NextFunction) {
 
     const url = await getUrl(urlId);
     if (!url) {
-      throw new Error('Erro na url');
+      throw new Error("Erro na url");
     }
 
     return res.redirect(url.url);
@@ -38,11 +38,12 @@ export async function get(req: Request, res: Response, next: NextFunction) {
 }
 
 export function treatError(
-  error,
+  error: any,
   _req: Request,
   res: Response,
-  _next: NextFunction,
+  _next: NextFunction
 ) {
+  res.sendStatus(500);
   log.error(error);
-  res.status(500);
 }
+  
